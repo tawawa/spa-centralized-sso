@@ -4,9 +4,8 @@
 
 1. Go to https://manage.auth0.com/#/clients and create a single-page
    application client with OIDC Conformant mode enabled
-2. Add `http://localhost:3000` and `http://localhost:3000/callback.html` as
-   allowed callback URLs
-3. Enter your Auth0 domain and client ID in the
+2. Add `http://localhost:3000` as allowed callback URLs
+3. Enter your Auth0 domain, client ID, and Auth0 Connection in the
    [`auth0-variables.js`](/auth0-variables.js) file.
 
 ## Running the sample
@@ -16,7 +15,16 @@ To start the sample, start a web server in the root of this repository at port
 
 ```sh make ```
 
-and then browse to [http://localhost:3000](http://localhost:3000).
+Tend to use:
+
+```
+http-server -p 3000
+```
+
+Using Chrome Web Browser, I use dev tools to ensure `disable cache` is on.
+
+
+Browse to [http://localhost:3000](http://localhost:3000).
 
 ## How this sample works
 

@@ -5,12 +5,12 @@ function displayStatus () {
   const isExpired = expirationDate < new Date();
 
   if (!token) {
-    status = 'There is no access token present in local storage, meaning that you are not logged in. <a href="#" onclick="renew()">Click here to attempt an SSO login</a>';
+    status = 'There is no access token present in local storage, meaning that you are not logged in. <a href="#" onclick="checkSession()">Click here to attempt an SSO login</a>';
   } else if (isExpired) {
-    status = 'There is an expired access token in local storage. <a href="#" onclick="renew()">Click here to renew it</a>';
+    status = 'There is an expired access token in local storage. <a href="#" onclick="checkSession()">Click here to renew it</a>';
     document.getElementById('logout').style.visibility = 'visible';
   } else {
-    status = `There is an access token in local storage, and it expires on ${expirationDate}. <a href="#" onclick="renew()">Click here to renew it</a>`;
+    status = `There is an access token in local storage, and it expires on ${expirationDate}. <a href="#" onclick="checkSession()">Click here to renew it</a>`;
     document.getElementById('logout').style.visibility = 'visible';
   }
   document.getElementById('status').innerHTML = status;
@@ -22,9 +22,14 @@ function saveAuthResult (result) {
   displayStatus();
 }
 
-function renew () {
-  auth0js.renewAuth({
+function checkSession () {
+  auth0js.checkSession({
+    responseType: 'token id_token',
+    scope: 'openid profile email',
+    audience: 'https://' + AUTH0_DOMAIN + '/userinfo',
+    connection: AUTH0_CONNECTION,
     redirectUri: 'http://localhost:3000/callback.html',
+    timeout: 5000,
     usePostMessage: true
   }, function (err, result) {
     if (err) {
@@ -44,4 +49,6 @@ auth0js.parseHash(window.location.hash, function (err, result) {
   }
 });
 
+console.log('page loaded..');
+debugger;
 displayStatus();
